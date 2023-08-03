@@ -4,6 +4,7 @@ import os
 import numpy as np
 import cv2
 from tqdm import tqdm
+import pyperclip
 
 # TODO: 添加GUI界面，如果需要的话
 
@@ -19,9 +20,9 @@ class AutoSketchProcess:
         self.button_pt_mapping = {}
         self.custom_setting()
         # 可根据实际网络情况调整操作延时以提高效率
-        self.upload_sleep = 10
-        self.crop_sleep = 10
-        self.process_sleep = 10
+        self.upload_sleep = 8
+        self.crop_sleep = 6
+        self.process_sleep = 5
         self.download_sleep = 5
         return
 
@@ -53,13 +54,13 @@ class AutoSketchProcess:
 
         self.set_button_pt('fade_edge', (3625, 400))
         self.set_button_pt('choospic',  (3709, 354))
-        self.set_button_pt('upload',    (4006, 667))
-        self.set_button_pt('crop_landscape', (3988, 825))
-        self.set_button_pt('crop_portrait', (3981, 865))
+        self.set_button_pt('upload',    (3993, 650))
+        self.set_button_pt('crop_landscape', (3986, 799))
+        self.set_button_pt('crop_portrait', (3985, 834))
         self.set_button_pt('pic',  (3980, 565))
         self.set_button_pt('save', (4057, 605))
         self.set_button_pt('sketch',   (3642, 252))
-        self.set_button_pt('continue', (3705, 463))
+        self.set_button_pt('continue', ((3705, 447)))
 
         return
 
@@ -109,10 +110,13 @@ class AutoSketchProcess:
         pyautogui.leftClick(self.button_pt_mapping['upload'])
         time.sleep(1)
         # pyautogui.typewrite(ori_img_path, 0.15)
-        pyautogui.typewrite(ori_img_path)
+        pyperclip.copy(ori_img_path)
         time.sleep(1)
+        # pyperclip.paste()
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(0.5)
         pyautogui.press(['enter'])
-        pyautogui.press(['enter'])
+        # pyautogui.press(['enter'])
         time.sleep(self.upload_sleep)
         if if_portrait:
             pyautogui.leftClick(self.button_pt_mapping['crop_portrait'])
@@ -126,10 +130,15 @@ class AutoSketchProcess:
         pyautogui.leftClick(self.button_pt_mapping['save'])
         time.sleep(2)
         # pyautogui.typewrite(res_img_path, 0.15)
-        pyautogui.typewrite(res_img_path)
+        # pyautogui.typewrite(res_img_path)
+        # time.sleep(1)
+        pyperclip.copy(res_img_path)
         time.sleep(1)
+        # pyperclip.paste()
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(0.5)
         pyautogui.press(['enter'])
-        pyautogui.press(['enter'])
+        # pyautogui.press(['enter'])
         time.sleep(self.download_sleep)
         pyautogui.leftClick(self.button_pt_mapping['sketch'])
         time.sleep(5)
